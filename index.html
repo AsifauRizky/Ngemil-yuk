@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngemil Yuk!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #FFA502;
+            --accent: #FF4757;
+            --pink: #FF6B81;
+            --purple: #A29BFE;
+            --mint: #55E6C1;
+            --yellow: #FECA57;
+            --dark: #2F3542;
+            --light: #F8F9FA;
+            --gradient1: linear-gradient(135deg, #FF6B6B, #FFA502, #FECA57);
+            --gradient2: linear-gradient(135deg, #A29BFE, #FF6B81);
+            --gradient3: linear-gradient(135deg, #55E6C1, #58B4FF);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 40px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(5deg); }
+        }
+
+        .logo-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient1);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== THREE DOTS MENU ===== */
+        .menu-container {
+            position: relative;
+        }
+
+        .three-dots {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient2);
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(162, 155, 254, 0.4);
+        }
+
+        .three-dots:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(162, 155, 254, 0.6);
+        }
+
+        .three-dots .dot {
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .three-dots.active .dot {
+            animation: dotBounce 0.6s ease;
+        }
+
+        @keyframes dotBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 65px;
+            right: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            min-width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-header {
+            background: var(--gradient2);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .dropdown-header h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .dropdown-header p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--dark);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(162,155,254,0.1), rgba(255,107,129,0.1));
+            padding-left: 25px;
+        }
+
+        .dropdown-item .icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .dropdown-item:nth-child(2) .icon-box { background: var(--gradient1); }
+        .dropdown-item:nth-child(3) .icon-box { background: var(--gradient3); }
+        .dropdown-item:nth-child(4) .icon-box { background: var(--gradient2); }
+
+        .dropdown-item-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .dropdown-item-text p {
+            font-size: 0.72rem;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 60px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #FFF5F5 0%, #FFF9E6 50%, #F0FFF4 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,107,107,0.15), transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(85,230,193,0.15), transparent 70%);
+            bottom: -50px;
+            left: -100px;
+            border-radius: 50%;
+        }
+
+        /* Floating snack emojis */
+        .floating-emojis {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .float-emoji {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: floatEmoji 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .float-emoji:nth-child(1) { top: 15%; left: 5%; animation-delay: 0s; }
+        .float-emoji:nth-child(2) { top: 25%; right: 8%; animation-delay: 1s; font-size: 3rem; }
+        .float-emoji:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 2s; }
+        .float-emoji:nth-child(4) { top: 40%; left: 3%; animation-delay: 0.5s; font-size: 2rem; }
+        .float-emoji:nth-child(5) { bottom: 30%; right: 5%; animation-delay: 1.5s; }
+        .float-emoji:nth-child(6) { top: 10%; left: 50%; animation-delay: 3s; font-size: 2rem; }
+        .float-emoji:nth-child(7) { bottom: 15%; left: 40%; animation-delay: 2.5s; }
+        .float-emoji:nth-child(8) { top: 60%; right: 3%; animation-delay: 0.8s; font-size: 2rem; }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(10deg); }
+            50% { transform: translateY(-10px) rotate(-5deg); }
+            75% { transform: translateY(-25px) rotate(5deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary);
+            box-shadow: 0 5px 20px rgba(255,107,107,0.2);
+            margin-bottom: 25px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-badge .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .hero h1 .wave {
+            display: inline-block;
+            animation: wave 2.5s ease-in-out infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #666;
+            max-width: 550px;
+            margin: 0 auto 35px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient1);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,107,0.5);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 2px solid #eee;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 50px;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SECTION COMMON ===== */
+        .section {
+            padding: 80px 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,165,2,0.1));
+            color: var(--primary);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .section-header h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            color: #888;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ===== PRODUK CEMILAN ===== */
+        #produk {
+            background: linear-gradient(180deg, #FFF9E6, #FFF5F5);
+        }
+
+        .product-filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 2px solid #eee;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--gradient1);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.3);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-card .card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:nth-child(1) .product-image { background: linear-gradient(135deg, #FFE5E5, #FFF0E5); }
+        .product-card:nth-child(2) .product-image { background: linear-gradient(135deg, #E5F5FF, #E5FFE5); }
+        .product-card:nth-child(3) .product-image { background: linear-gradient(135deg, #FFF5E5, #FFE5F5); }
+        .product-card:nth-child(4) .product-image { background: linear-gradient(135deg, #F0E5FF, #FFE5FF); }
+        .product-card:nth-child(5) .product-image { background: linear-gradient(135deg, #E5FFF5, #E5FFFF); }
+        .product-card:nth-child(6) .product-image { background: linear-gradient(135deg, #FFFFE5, #FFE5E5); }
+
+        .product-image .emoji {
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-image .emoji {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .product-info {
+            padding: 20px 25px 25px;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--purple);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .product-info p {
+            font-size: 0.8rem;
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .product-price small {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            color: #ccc;
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .add-cart-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient1);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-cart-btn:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 12px;
+        }
+
+        .product-rating i {
+            color: var(--yellow);
+            font-size: 0.75rem;
+        }
+
+        .product-rating span {
+            font-size: 0.75rem;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        /* ===== BMC SECTION ===== */
+        #bmc {
+            background: linear-gradient(180deg, #F0FFF4, #F5F0FF);
+        }
+
+        .bmc-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: auto auto;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .bmc-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bmc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .bmc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .bmc-card:nth-child(1)::before { background: var(--gradient1); }
+        .bmc-card:nth-child(2)::before { background: var(--gradient2); }
+        .bmc-card:nth-child(3)::before { background: var(--gradient3); }
+        .bmc-card:nth-child(4)::before { background: linear-gradient(135deg, #FF6B6B, #A29BFE); }
+        .bmc-card:nth-child(5)::before { background: linear-gradient(135deg, #FECA57, #FF6B6B); }
+        .bmc-card:nth-child(6)::before { background: linear-gradient(135deg, #55E6C1, #FECA57); }
+        .bmc-card:nth-child(7)::before { background: linear-gradient(135deg, #A29BFE, #55E6C1); }
+        .bmc-card:nth-child(8)::before { background: linear-gradient(135deg, #FF6B81, #FECA57); }
+        .bmc-card:nth-child(9)::before { background: linear-gradient(135deg, #58B4FF, #A29BFE); }
+
+        .bmc-card .bmc-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .bmc-card:nth-child(1) .bmc-icon { background: var(--gradient1); }
+        .bmc-card:nth-child(2) .bmc-icon { background: var(--gradient2); }
+        .bmc-card:nth-child(3) .bmc-icon { background: var(--gradient3); }
+        .bmc-card:nth-child(4) .bmc-icon { background: linear-gradient(135deg, #FF6B6B, #A29BFE); }
+        .bmc-card:nth-child(5) .bmc-icon { background: linear-gradient(135deg, #FECA57, #FF6B6B); }
+        .bmc-card:nth-child(6) .bmc-icon { background: linear-gradient(135deg, #55E6C1, #FECA57); }
+        .bmc-card:nth-child(7) .bmc-icon { background: linear-gradient(135deg, #A29BFE, #55E6C1); }
+        .bmc-card:nth-child(8) .bmc-icon { background: linear-gradient(135deg, #FF6B81, #FECA57); }
+        .bmc-card:nth-child(9) .bmc-icon { background: linear-gradient(135deg, #58B4FF, #A29BFE); }
+
+        .bmc-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .bmc-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bmc-card ul li {
+            font-size: 0.78rem;
+            color: #777;
+            padding: 4px 0;
+            padding-left: 15px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .bmc-card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .bmc-center {
+            grid-column: 2 / 5;
+            grid-row: 2 / 3;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        #kontak {
+            background: linear-gradient(180deg, #F5F0FF, #FFF5F5);
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-info h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-info > p {
+            color: #888;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-item .c-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .contact-item:nth-child(3) .c-icon { background: var(--gradient1); }
+        .contact-item:nth-child(4) .c-icon { background: var(--gradient2); }
+        .contact-item:nth-child(5) .c-icon { background: var(--gradient3); }
+        .contact-item:nth-child(6) .c-icon { background: linear-gradient(135deg, #FECA57, #FF6B6B); }
+
+        .contact-item-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .contact-item-text p {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            background: #FAFAFA;
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255,107,107,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: var(--gradient1);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(255,107,107,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,107,0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .footer-brand .logo-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .footer-brand p {
+            color: #999;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--gradient1);
+            transform: translateY(-3px);
+        }
+
+        .footer-col h4 {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--gradient1);
+            border-radius: 10px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 25px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom .heart {
+            color: var(--primary);
+            animation: heartBeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient1);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2000;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .notification .notif-text h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .notification .notif-text p {
+            font-size: 0.72rem;
+            color: #999;
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-btn {
+            display: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: none;
+            background: var(--gradient2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .bmc-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .bmc-center {
+                grid-column: 1 / 4;
+                grid-row: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .hero {
+                padding: 100px 20px 40px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .hero-stats {
+                gap: 25px;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bmc-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .bmc-center {
+                grid-column: 1 / 3;
+            }
+
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+
+            .float-emoji {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .bmc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bmc-center {
+                grid-column: 1;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* ===== ANIMATIONS ON SCROLL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-emoji {
+            font-size: 4rem;
+            animation: loaderBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes loaderBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .loader-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 15px;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 4px;
+            background: #eee;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .loader-bar-fill {
+            height: 100%;
+            background: var(--gradient1);
+            border-radius: 10px;
+            animation: loaderFill 1.5s ease forwards;
+        }
+
+        @keyframes loaderFill {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div class="loader" id="loader">
+        <div class="loader-emoji">🍿</div>
+        <div class="loader-text">Ngemil Yuk!</div>
+        <div class="loader-bar">
+            <div class="loader-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <div class="notif-icon"><i class="fas fa-check"></i></div>
+        <div class="notif-text">
+            <h4 id="notif-title">Berhasil!</h4>
+            <p id="notif-desc">Item ditambahkan ke keranjang</p>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon">🍿</div>
+            <span class="logo-text">Ngemil Yuk!</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#hero">Beranda</a></li>
+            <li><a href="#produk">Produk</a></li>
+            <li><a href="#bmc">BMC</a></li>
+            <li><a href="#kontak">Kontak</a></li>
+        </ul>
+
+        <div class="menu-container">
+            <button class="three-dots" id="threeDots" onclick="toggleDropdown()">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-header">
+                    <h3>🍽️ Menu Ngemil</h3>
+                    <p>Pilih yang kamu butuhkan!</p>
+                </div>
+                <a href="#produk" class="dropdown-item" onclick="closeDropdown()">
+                    <div class="icon-box"><i class="fas fa-cookie-bite"></i></div>
+                    <div class="dropdown-item-text">
+                        <h4>Produk Cemilan</h4>
+                        <p>Jelajahi berbagai jenis cemilan</p>
+                    </div>
+                </a>
+                <a href="#bmc" class="dropdown-item" onclick="closeDropdown()">
+                    <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                    <div class="dropdown-item-text">
+                        <h4>Business Model Canvas</h4>
+                        <p>Strategi bisnis kami</p>
+                    </div>
+                </a>
+                <a href="#kontak" class="dropdown-item" onclick="closeDropdown()">
+                    <div class="icon-box"><i class="fas fa-headset"></i></div>
+                    <div class="dropdown-item-text">
+                        <h4>Hubungi Kami</h4>
+                        <p>Butuh bantuan? Chat sekarang!</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="floating-emojis">
+            <span class="float-emoji">🍿</span>
+            <span class="float-emoji">🍪</span>
+            <span class="float-emoji">🧁</span>
+            <span class="float-emoji">🍩</span>
+            <span class="float-emoji">🥨</span>
+            <span class="float-emoji">🍫</span>
+            <span class="float-emoji">🌮</span>
+            <span class="float-emoji">🧀</span>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                Cemilan Terlaris 2026 ✨
+            </div>
+            <h1>
+                <span class="wave">🍿</span>
+                <span class="highlight">Ngemil Yuk!</span><br>
+                Cemilan Enak<br>
+                Bikin Nagih!
+            </h1>
+            <p>Temukan berbagai macam cemilan kekinian yang bikin harimu makin seru! Dari yang manis, gurih, sampai pedes — semua ada! 🤤</p>
+            <div class="hero-buttons">
+                <a href="#produk" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag"></i> Belanja Sekarang
+                </a>
+                <a href="#bmc" class="btn btn-secondary">
+                    <i class="fas fa-play-circle"></i> Lihat BMC
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="counter1">50+</div>
+                    <div class="stat-label">Varian Cemilan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="counter2">10K+</div>
+                    <div class="stat-label">Pelanggan Happy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="counter3">4.9⭐</div>
+                    <div class="stat-label">Rating Toko</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUK CEMILAN -->
+    <section class="section" id="produk">
+        <div class="section-header reveal">
+            <span class="section-tag">🛒 Produk Kami</span>
+            <h2>Jenis Cemilan Kekinian</h2>
+            <p>Pilihan cemilan terbaik yang bikin kamu nggak bisa berhenti ngunyah!</p>
+        </div>
+
+        <div class="product-filters reveal">
+            <button class="filter-btn active" onclick="filterProducts('all', this)">Semua</button>
+            <button class="filter-btn" onclick="filterProducts('gurih', this)">🧂 Gurih</button>
+            <button class="filter-btn" onclick="filterProducts('manis', this)">🍬 Manis</button>
+            <button class="filter-btn" onclick="filterProducts('pedas', this)">🌶️ Pedas</button>
+            <button class="filter-btn" onclick="filterProducts('sehat', this)">🥗 Sehat</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Card 1 -->
+            <div class="product-card reveal" data-category="gurih">
+                <span class="card-badge">🔥 Best Seller</span>
+                <div class="product-image">
+                    <span class="emoji">🍿</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Gurih</div>
+                    <h3>Popcorn Caramel Crunch</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(4.9)</span>
+                    </div>
+                    <p>Popcorn renyah dengan lapisan karamel premium yang manis dan gurih.</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 25K <small>Rp 35K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Popcorn Caramel Crunch')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card reveal" data-category="manis">
+                <span class="card-badge">✨ New</span>
+                <div class="product-image">
+                    <span class="emoji">🍪</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Manis</div>
+                    <h3>Soft Choco Chip Cookies</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>(4.7)</span>
+                    </div>
+                    <p>Cookies lembut dengan chocolate chip premium yang lumer di mulut.</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 30K <small>Rp 40K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Soft Choco Chip Cookies')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="product-card reveal" data-category="pedas">
+                <span class="card-badge">🌶️ Hot!</span>
+                <div class="product-image">
+                    <span class="emoji">🥨</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Pedas</div>
+                    <h3>Spicy Pretzel Stick</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(4.8)</span>
+                    </div>
+                    <p>Pretzel renyah dengan taburan bumbu pedas level naga yang bikin nagih!</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 20K <small>Rp 28K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Spicy Pretzel Stick')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="product-card reveal" data-category="manis">
+                <div class="product-image">
+                    <span class="emoji">🧁</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Manis</div>
+                    <h3>Matcha Red Velvet Cake</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>(4.5)</span>
+                    </div>
+                    <p>Cupcake lembut perpaduan matcha Jepang dan red velvet yang cantik.</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 35K <small>Rp 45K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Matcha Red Velvet Cake')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="product-card reveal" data-category="sehat">
+                <span class="card-badge">🌿 Healthy</span>
+                <div class="product-image">
+                    <span class="emoji">🥜</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Sehat</div>
+                    <h3>Mixed Nuts Granola</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(4.9)</span>
+                    </div>
+                    <p>Granola premium dengan campuran kacang, biji-bijian, dan madu alami.</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 40K <small>Rp 55K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Mixed Nuts Granola')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="product-card reveal" data-category="gurih">
+                <div class="product-image">
+                    <span class="emoji">🧀</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Gurih</div>
+                    <h3>Keju Mozarella Sticks</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>(4.6)</span>
+                    </div>
+                    <p>Mozarella stick crispy yang bisa ditarik panjang, ditemani saus spesial.</p>
+                    <div class="product-footer">
+                        <span class="product-price">Rp 28K <small>Rp 38K</small></span>
+                        <button class="add-cart-btn" onclick="addToCart('Keju Mozarella Sticks')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUSINESS MODEL CANVAS -->
+    <section class="section" id="bmc">
+        <div class="section-header reveal">
+            <span class="section-tag">📊 Strategi Bisnis</span>
+            <h2>Business Model Canvas</h2>
+            <p>Framework bisnis Ngemil Yuk! yang terstruktur dan inovatif</p>
+        </div>
+
+        <div class="bmc-grid">
+            <!-- Row 1 -->
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-users"></i></div>
+                <h3>Customer Segments</h3>
+                <ul>
+                    <li>Anak muda 15-30 tahun</li>
+                    <li>Pecinta cemilan kekinian</li>
+                    <li>Mahasiswa & pekerja</li>
+                    <li>Health conscious snackers</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <h3>Customer Relationships</h3>
+                <ul>
+                    <li>Loyalty program & poin</li>
+                    <li>Media sosial interaktif</li>
+                    <li>Customer service 24/7</li>
+                    <li>Personalized recommendations</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-bullhorn"></i></div>
+                <h3>Channels</h3>
+                <ul>
+                    <li>Website & Mobile App</li>
+                    <li>Instagram, TikTok, Shopee</li>
+                    <li>Marketplace online</li>
+                    <li>Reseller & mitra offline</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-heart"></i></div>
+                <h3>Value Propositions</h3>
+                <ul>
+                    <li>Cemilan unik & berkualitas</li>
+                    <li>Harga terjangkau</li>
+                    <li>Pengiriman cepat</li>
+                    <li>Varian rasa inovatif</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-money-bill-wave"></i></div>
+                <h3>Revenue Streams</h3>
+                <ul>
+                    <li>Penjualan langsung online</li>
+                    <li>Subscription box bulanan</li>
+                    <li>Franchise & reseller</li>
+                    <li>Custom gift hamper</li>
+                </ul>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-cogs"></i></div>
+                <h3>Key Activities</h3>
+                <ul>
+                    <li>R&D produk baru</li>
+                    <li>Digital marketing</li>
+                    <li>Quality control</li>
+                    <li>Supply chain management</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card bmc-center reveal">
+                <div class="bmc-icon"><i class="fas fa-cookie-bite"></i></div>
+                <h3>Key Resources</h3>
+                <ul>
+                    <li>Brand "Ngemil Yuk!" yang kuat</li>
+                    <li>Tim R&D & produksi kreatif</li>
+                    <li>Platform digital & e-commerce</li>
+                    <li>Supplier bahan baku premium</li>
+                    <li>Komunitas pelanggan setia</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Key Partners</h3>
+                <ul>
+                    <li>Supplier bahan baku</li>
+                    <li>Kurir pengiriman</li>
+                    <li>Influencer & KOL</li>
+                    <li>Platform e-commerce</li>
+                </ul>
+            </div>
+
+            <div class="bmc-card reveal">
+                <div class="bmc-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h3>Cost Structure</h3>
+                <ul>
+                    <li>Bahan baku & produksi</li>
+                    <li>Marketing & advertising</li>
+                    <li>Gaji karyawan</li>
+                    <li>Operasional & logistik</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAK / HUBUNGI KAMI -->
+    <section class="section" id="kontak">
+        <div class="section-header reveal">
+            <span class="section-tag">📞 Hubungi Kami</span>
+            <h2>Ada Pertanyaan?</h2>
+            <p>Jangan sungkan untuk menghubungi kami, tim kami siap membantu!</p>
+        </div>
+
+        <div class="contact-wrapper">
+            <div class="contact-info reveal">
+                <h3>Ngemil Yuk! HQ 🏢</h3>
+                <p>Kami selalu terbuka untuk pertanyaan, kolaborasi, atau sekadar ngobrol tentang cemilan favoritmu!</p>
+
+                <div class="contact-item">
+                    <div class="c-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-item-text">
+                        <h4>Alamat</h4>
+                        <p>Jl. kopaja No. 55, Punggur lampung Tengah</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="c-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="contact-item-text">
+                        <h4>Telepon</h4>
+                        <p>+62 819-9063-2879</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="c-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-item-text">
+                        <h4>Email</h4>
+                        <p>hello@ngemilyuk.id</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="c-icon"><i class="fas fa-clock"></i></div>
+                    <div class="contact-item-text">
+                        <h4>Jam Operasional</h4>
+                        <p>Senin - Sabtu, 08:00 - 21:00 WIB</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form reveal" onsubmit="submitForm(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" placeholder="Masukkan nama kamu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="email@contoh.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Subjek</label>
+                    <select required>
+                        <option value="">Pilih subjek...</option>
+                        <option>Pertanyaan Produk</option>
+                        <option>Kerjasama / Partnership</option>
+                        <option>Komplain & Saran</option>
+                        <option>Reseller / Mitra</option>
+                        <option>Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pesan</label>
+                    <textarea placeholder="Tulis pesan kamu di sini..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Kirim Pesan
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span class="logo-text">🍿 Ngemil Yuk!</span>
+                <p>Platform cemilan kekinian terlengkap di Indonesia. Menyajikan berbagai varian rasa yang bikin kamu nggak bisa berhenti ngunyah!</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Produk</h4>
+                <ul>
+                    <li><a href="#">Cemilan Gurih</a></li>
+                    <li><a href="#">Cemilan Manis</a></li>
+                    <li><a href="#">Cemilan Pedas</a></li>
+                    <li><a href="#">Cemilan Sehat</a></li>
+                    <li><a href="#">Paket Bundle</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Perusahaan</h4>
+                <ul>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Karir</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press Kit</a></li>
+                    <li><a href="#">Mitra</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Pengiriman</a></li>
+                    <li><a href="#">Pengembalian</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Ngemil Yuk! Dibuat dengan <span class="heart">❤️</span> di Indonesia 🇮🇩</p>
+        </div>
+    </footer>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // ===== LOADER =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1800);
+        });
+
+        // ===== THREE DOTS DROPDOWN =====
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('threeDots');
+            menu.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+
+        function closeDropdown() {
+            document.getElementById('dropdownMenu').classList.remove('active');
+            document.getElementById('threeDots').classList.remove('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const container = document.querySelector('.menu-container');
+            if (!container.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const scrollTop = document.getElementById('scrollTop');
+
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            if (window.scrollY > 400) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // ===== SCROLL TO TOP =====
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== PRODUCT FILTER =====
+        function filterProducts(category, btn) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter cards
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // ===== ADD TO CART =====
+        function addToCart(productName) {
+            showNotification('Ditambahkan! 🎉', `${productName} masuk ke keranjang`);
+        }
+
+        // ===== NOTIFICATION =====
+        function showNotification(title, desc) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notif-title').textContent = title;
+            document.getElementById('notif-desc').textContent = desc;
+            notif.classList.add('show');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== FORM SUBMIT =====
+        function submitForm(e) {
+            e.preventDefault();
+            showNotification('Pesan Terkirim! 📨', 'Tim kami akan segera merespon');
+            e.target.reset();
+        }
+
+        // ===== SCROLL REVEAL =====
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ===== MOBILE MENU (simple toggle) =====
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            navLinks.style.flexDirection = 'column';
+            navLinks.style.position = 'absolute';
+            navLinks.style.top = '70px';
+            navLinks.style.left = '0';
+            navLinks.style.right = '0';
+            navLinks.style.background = 'white';
+            navLinks.style.padding = '20px';
+            navLinks.style.borderRadius = '0 0 20px 20px';
+            navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+            navLinks.style.gap = '15px';
+        }
+
+        // ===== TYPING EFFECT ON HERO (subtle) =====
+        const heroTitle = document.querySelector('.hero h1');
+        if (heroTitle) {
+            heroTitle.style.opacity = '1';
+        }
+
+        // ===== PARALLAX ON FLOATING EMOJIS =====
+        window.addEventListener('mousemove', (e) => {
+            const emojis = document.querySelectorAll('.float-emoji');
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            emojis.forEach((emoji, i) => {
+                const speed = (i + 1) * 0.5;
+                emoji.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounters() {
+            const counters = [
+                { el: document.getElementById('counter1'), target: 50, suffix: '+' },
+                { el: document.getElementById('counter2'), target: 10, suffix: 'K+' },
+                { el: document.getElementById('counter3'), target: 4.9, suffix: '⭐', decimal: true }
+            ];
+
+            counters.forEach(counter => {
+                let current = 0;
+                const increment = counter.target / 60;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= counter.target) {
+                        current = counter.target;
+                        clearInterval(timer);
+                    }
+                    if (counter.decimal) {
+                        counter.el.textContent = current.toFixed(1) + counter.suffix;
+                    } else {
+                        counter.el.textContent = Math.floor(current) + counter.suffix;
+                    }
+                }, 30);
+            });
+        }
+
+        // Trigger counter animation when hero is visible
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    heroObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        heroObserver.observe(document.querySelector('.hero-stats'));
+    </script>
+</body>
+</html>
